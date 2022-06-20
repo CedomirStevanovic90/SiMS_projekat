@@ -1,0 +1,18 @@
+﻿<Window x:Class="SiMS_projekat.View.PurchasePage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SiMS_projekat.View"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        Title="PurchasePage" Height="300" Width="400">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="51,46,0,0" TextWrapping="Wrap" Text="Quantity:" VerticalAlignment="Top"/>
+        <TextBox x:Name="quantityTextBox" HorizontalAlignment="Left" Height="23" Margin="104,46,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="254"/>
+        <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Center" Margin="0,211,0,0" VerticalAlignment="Top" Width="108" Height="30" Click="addBtn_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,97,0,0" TextWrapping="Wrap" Text="Date of purchase:" VerticalAlignment="Top"/>
+        <DatePicker x:Name="datePickerBox" HorizontalAlignment="Left" Margin="108,93,0,0" VerticalAlignment="Top" Width="250"/>
+    </Grid>
+</Window>

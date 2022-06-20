@@ -1,0 +1,41 @@
+﻿<Window x:Class="SiMS_projekat.View.IngredientsForMedicinePage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SiMS_projekat.View"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        Title="IngredientsForMedicinePage" Height="400" Width="400">
+    <Grid>
+        <DataGrid x:Name="myIngredientsDataGrid" x:FieldModifier="public" AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="True" Margin="0, 0, 0, 70">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ingredient ID" Binding="{Binding IngredientId}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Actions"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Button x:Name="addIngredientBtn" Content="Add ingredient" Click="addIngredientBtn_Click" Height="40"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="backBtn" Content="Back" HorizontalAlignment="Center" Margin="0,325,0,0" VerticalAlignment="Top" Width="75" Height="28" FontSize="15" Click="backBtn_Click"/>
+    </Grid>
+</Window>

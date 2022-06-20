@@ -1,0 +1,16 @@
+﻿<Window x:Class="SiMS_projekat.View.UpravnikHomepage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SiMS_projekat.View"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        Title="UpravnikHomepage" Height="450" Width="800">
+    <Grid>
+        <TextBlock HorizontalAlignment="Center" Margin="40" TextWrapping="Wrap" Text="Choose one of the offered options:" VerticalAlignment="Top" FontSize="25"/>
+        <Button x:Name="medicationsBtn" Content="Display all medications" HorizontalAlignment="Center" Margin="200,140,200,0" VerticalAlignment="Top" Width="220" Height="74" FontSize="20" Click="medicationsBtn_Click"/>
+        <Button x:Name="usersBtn" Content="Display all users" HorizontalAlignment="Center" Margin="200,282,200,0" VerticalAlignment="Top" Width="220" Height="74" FontSize="20" Click="usersBtn_Click"/>
+    </Grid>
+</Window>

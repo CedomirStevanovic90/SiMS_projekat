@@ -1,0 +1,37 @@
+[
+  {
+	"IngredientId": 1,
+	"Name": "Kalcijum",
+	"Description": "Kalcijum je sastojak"
+  },
+  {
+	"IngredientId": 2,
+	"Name": "Magnezijum",
+	"Description": "Magnezijum je sastojak"
+  },
+  {
+	"IngredientId": 3,
+	"Name": "Silicijum",
+	"Description": "Silicijum je sastojak"
+  },
+  {
+	"IngredientId": 4,
+	"Name": "Mikonazol",
+	"Description": "Mikonazol je sastojak"
+  },
+  {
+	"IngredientId": 5,
+	"Name": "Gentamicin",
+	"Description": "Gentamicin je sastojak"
+  },
+  {
+	"IngredientId": 6,
+	"Name": "Deksametazon",
+	"Description": "Deksametazon je sastojak"
+  },
+  {
+	"IngredientId": 7,
+	"Name": "Doksiciklin",
+	"Description": "Doksiciklin je sastojak"
+  }
+]

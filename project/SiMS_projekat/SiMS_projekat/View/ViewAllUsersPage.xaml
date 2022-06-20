@@ -1,0 +1,68 @@
+﻿<Window x:Class="SiMS_projekat.View.ViewAllUsersPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SiMS_projekat.View"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        Title="ViewAllUsersPage" Height="450" Width="800">
+    <Grid>
+        <TextBlock HorizontalAlignment="Center" Margin="366,10,346.6,0" TextWrapping="Wrap" Text=" Users" VerticalAlignment="Top" FontSize="25" Width="81"/>
+        <DataGrid x:Name="myUsersDataGrid" x:FieldModifier="public" AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="True" Margin="0,105,-0.4,50">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding UserId}" Width="25"/>
+                <DataGridTextColumn Header="JMBG" Binding="{Binding Jmbg}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}"/>
+                <DataGridTextColumn Header="E-mail" Binding="{Binding Email}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Mobile phone" Binding="{Binding MobilePhone}"/>
+                <DataGridTextColumn Header="User type" Binding="{Binding UserType}"/>
+                <DataGridTextColumn Header="Blocked" Binding="{Binding Blocked}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Actions"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Button x:Name="updateBtn" Content="Update" Click="updateBtn_Click"/>
+                                <Button x:Name="deleteBtn" Content="Delete" Click="deleteBtn_Click"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="createBtn" Content="User registration" HorizontalAlignment="Left" Margin="218,375,0,0" VerticalAlignment="Top" Width="365" Height="35" Click="createBtn_Click"/>
+        <Button x:Name="backBtn" Content="Back" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="127" Height="33" Click="backBtn_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="190,74,0,0" TextWrapping="Wrap" Text="Select sort mode:" VerticalAlignment="Top" FontSize="13"/>
+        <ComboBox x:Name="comboBoxSorting" HorizontalAlignment="Left" Margin="294,74,0,0" VerticalAlignment="Top" Width="120" DropDownClosed="comboBoxSorting_DropDownClosed">
+            <ComboBox.Items>
+                <ComboBoxItem>No sort</ComboBoxItem>
+                <ComboBoxItem>Sort by name (A-Z)</ComboBoxItem>
+                <ComboBoxItem>Sort by name (Z-A)</ComboBoxItem>
+                <ComboBoxItem>Sort by surname (A-Z)</ComboBoxItem>
+                <ComboBoxItem>Sort by surname (Z-A)</ComboBoxItem>
+            </ComboBox.Items>
+        </ComboBox>
+        <TextBlock HorizontalAlignment="Left" Margin="533,75,0,0" TextWrapping="Wrap" Text="Filter by user type:" VerticalAlignment="Top" FontSize="13"/>
+        <ComboBox x:Name="comboBoxFiltering" HorizontalAlignment="Left" Margin="643,75,0,0" VerticalAlignment="Top" Width="120" DropDownClosed="comboBoxFiltering_DropDownClosed">
+            <ComboBox.Items>
+                <ComboBoxItem>No filter</ComboBoxItem>
+                <ComboBoxItem>Filter by Manager</ComboBoxItem>
+                <ComboBoxItem>Filter by Doctor</ComboBoxItem>
+                <ComboBoxItem>Filter by Pharmacist</ComboBoxItem>
+            </ComboBox.Items>
+        </ComboBox>
+    </Grid>
+</Window>

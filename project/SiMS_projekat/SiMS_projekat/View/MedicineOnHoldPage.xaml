@@ -1,0 +1,41 @@
+﻿<Window x:Class="SiMS_projekat.View.MedicineOnHoldPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SiMS_projekat.View"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        Title="MedicineOnHoldPage" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="myMedicinesOnHoldDataGrid" x:FieldModifier="public" AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="True" Margin="0,105,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Code" Binding="{Binding MedicineCode}"/>
+                <DataGridTextColumn Header="Medicine name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Producer" Binding="{Binding Producer}"/>
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}"/>
+                <DataGridTextColumn Header="Price" Binding="{Binding Price}"/>
+                <DataGridTextColumn Header="Accepted" Binding="{Binding Accepted}"/>
+                <DataGridTextColumn Header="Rejected" Binding="{Binding Rejected}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Actions"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Button x:Name="acceptBtn" Content="Accept" Height="20" Click="acceptBtn_Click"/>
+                                <Button x:Name="rejectBtn" Content="Reject" Height="20" Click="rejectBtn_Click"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="backBtn" Content="Back" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="127" Height="33" Click="backBtn_Click"/>
+        <TextBlock HorizontalAlignment="Center" Margin="309,10,258.6,0" TextWrapping="Wrap" Text=" Medicines on hold" VerticalAlignment="Top" FontSize="25" Width="226"/>
+    </Grid>
+</Window>
