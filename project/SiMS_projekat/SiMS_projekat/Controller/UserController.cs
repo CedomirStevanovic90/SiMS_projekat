@@ -36,5 +36,20 @@ namespace SiMS_projekat.Controller
         {
             userService.Delete(id);
         }
+
+        public string SignIn(string email, string password)
+        {
+            return userService.SignIn(email, password);
+        }
+
+        public List<User> sortingUsers(string typeOfSorting, List<User> usersForSorting)
+        {
+            return userService.sortingUsers(typeOfSorting, usersForSorting);
+        }
+
+        public List<User> filteringUsers(string typeOfFiltering, List<User> usersForFiltering)
+        {
+            return userService.filteringUsers(typeOfFiltering, usersForFiltering);
+        }
     }
 }

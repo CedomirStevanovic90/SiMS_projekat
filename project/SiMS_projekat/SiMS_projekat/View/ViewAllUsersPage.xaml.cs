@@ -64,60 +64,20 @@ namespace SiMS_projekat.View
 
         private void comboBoxSorting_DropDownClosed(object sender, EventArgs e)
         {
-            //List<User> users = userController.GetAll();
-            filteredUsers = userController.GetAll();
-            filteringUsers();
-            sortingUsers();
-            usersDataGrid.ItemsSource = filteredUsers;
-        }
-
-        private void sortingUsers()
-        {
-            if (comboBoxSorting.Text == "Sort by name (A-Z)")
-            {
-                filteredUsers = filteredUsers.OrderBy(u => u.Name).ToList();
-            }
-            else if (comboBoxSorting.Text == "Sort by name (Z-A)")
-            {
-                filteredUsers = filteredUsers.OrderByDescending(u => u.Name).ToList();
-            }
-            else if (comboBoxSorting.Text == "Sort by surname (A-Z)")
-            {
-                filteredUsers = filteredUsers.OrderBy(u => u.Surname).ToList();
-            }
-            else if (comboBoxSorting.Text == "Sort by surname (Z-A)")
-            {
-                filteredUsers = filteredUsers.OrderByDescending(u => u.Surname).ToList();
-            }
+            filteringAndSorting();
         }
 
         private void comboBoxFiltering_DropDownClosed(object sender, EventArgs e)
         {
-            //List<User> users = userController.GetAll();
-            filteredUsers = userController.GetAll();
-            filteringUsers();
-            sortingUsers();
-            usersDataGrid.ItemsSource = filteredUsers;
+            filteringAndSorting();
         }
 
-        private void filteringUsers()
+        private void filteringAndSorting()
         {
-            if (comboBoxFiltering.Text == "Filter by Manager")
-            {
-                filteredUsers = filteredUsers.Where(u => u.UserType == "Manager").ToList();
-            }
-            else if (comboBoxFiltering.Text == "Filter by Doctor")
-            {
-                filteredUsers = filteredUsers.Where(u => u.UserType == "Doctor").ToList();
-            }
-            else if (comboBoxFiltering.Text == "Filter by Pharmacist")
-            {
-                filteredUsers = filteredUsers.Where(u => u.UserType == "Pharmacist").ToList();
-            }
-            else if (comboBoxFiltering.Text == "No filter")
-            {
-                filteredUsers = userController.GetAll();
-            }
+            filteredUsers = userController.GetAll();
+            filteredUsers = userController.filteringUsers(comboBoxFiltering.Text, filteredUsers);
+            filteredUsers = userController.sortingUsers(comboBoxSorting.Text, filteredUsers);
+            usersDataGrid.ItemsSource = filteredUsers;
         }
     }
 }

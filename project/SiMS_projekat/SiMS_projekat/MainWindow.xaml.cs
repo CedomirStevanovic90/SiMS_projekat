@@ -50,42 +50,13 @@ namespace SiMS_projekat
 
         private void signInBtn_Click(object sender, RoutedEventArgs e)
         {
-            string email = emailBox.Text;
-            string password = passwordBox.Password;
-            User user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
-            if(user == null)
+            string checkSignIn = userController.SignIn(emailBox.Text, passwordBox.Password);
+            if(checkSignIn == "Close")
             {
-                int number = counter - 1;
-                if(number == 0)
-                {
-                    MessageBox.Show("Iskoristili ste moguci broj pokusaja!");
-                    this.Close();
-                    return;
-                }
-                MessageBox.Show("Niste uneli dobre kredencijale!\n Preostali broj pokusaja: " + number);
-                counter--;
-                return;
+                this.Close();
             }
-            if(user.Blocked == true)
+            else if(checkSignIn == "Hide")
             {
-                MessageBox.Show("Korisnik sa unetim e-mailom i passwordom je blokiran!");
-                return;
-            }
-            if (user.UserType.Equals("Manager"))
-            {
-                UpravnikHomepage upravnikHomepage = new UpravnikHomepage();
-                upravnikHomepage.Show();
-                this.Hide();
-
-            }else if(user.UserType.Equals("Doctor"))
-            {
-                LekarHomepage lekarHomepage = new LekarHomepage(user.Jmbg, "Doctor");
-                lekarHomepage.Show();
-                this.Hide();
-            }else if (user.UserType.Equals("Pharmacist"))
-            {
-                FarmaceutHomepage farmaceutHomepage = new FarmaceutHomepage(user.Jmbg, "Pharmacist");
-                farmaceutHomepage.Show();
                 this.Hide();
             }
         }

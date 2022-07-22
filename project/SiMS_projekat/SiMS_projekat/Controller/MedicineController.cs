@@ -36,5 +36,67 @@ namespace SiMS_projekat.Controller
         {
             medicineService.Delete(id);
         }
+
+        public List<Medicine> sortingAllMedicines(string typeOfSorting, List<Medicine> medicinesForSorting)
+        {
+            return medicineService.sortingMedicines(typeOfSorting, medicinesForSorting);
+        }
+
+        public List<Medicine> sortingAcceptedMedicines(string typeOfSorting, string userType, List<Medicine> acceptedMedicinesForSorting)
+        {
+            if (userType == "Pharmacist" && typeOfSorting == "No sort")
+            {
+                return GetAll().Where(m => m.Accepted == true).ToList();
+            }
+            else if (userType == "Pharmacist")
+            {
+                return medicineService.sortingMedicines(typeOfSorting, acceptedMedicinesForSorting);
+            }
+            return acceptedMedicinesForSorting;
+        }
+
+        public List<Medicine> sortingRejectedMedicines(string typeOfSorting, string userType, List<Medicine> rejectedMedicinesForSorting)
+        {
+            if (userType == "Pharmacist" && typeOfSorting == "No sort")
+            {
+                return GetAll().Where(m => m.Rejected == true).ToList();
+            }
+            else if (userType == "Pharmacist")
+            {
+                return medicineService.sortingMedicines(typeOfSorting, rejectedMedicinesForSorting);
+            }
+            return rejectedMedicinesForSorting;
+        }
+
+        public List<Medicine> searchingAllMedicines(string typeOfSearching, string contentForSearch, List<Medicine> medicines, List<Medicine> medicinesForSearching)
+        {
+            return medicineService.searchingMedicines(typeOfSearching, contentForSearch, medicines, medicinesForSearching);
+        }
+
+        public List<Medicine> searchingAcceptedMedicines(string typeOfSearching, string contentForSearch, string userType, List<Medicine> medicines, List<Medicine> acceptedMedicineForSearching)
+        {
+            if (userType == "Pharmacist" && typeOfSearching == "No search")
+            {
+                return GetAll().Where(m => m.Accepted == true).ToList();
+            }
+            else if (userType == "Pharmacist")
+            {
+                return medicineService.searchingMedicines(typeOfSearching, contentForSearch, medicines, acceptedMedicineForSearching);
+            }
+            return acceptedMedicineForSearching;
+        }
+
+        public List<Medicine> searchingRejectedMedicines(string typeOfSearching, string contentForSearch, string userType, List<Medicine> medicines, List<Medicine> rejectedMedicineForSearching)
+        {
+            if (userType == "Pharmacist" && typeOfSearching == "No search")
+            {
+                return GetAll().Where(m => m.Rejected == true).ToList();
+            }
+            else if (userType == "Pharmacist")
+            {
+                return medicineService.searchingMedicines(typeOfSearching, contentForSearch, medicines, rejectedMedicineForSearching);
+            }
+            return rejectedMedicineForSearching;
+        }
     }
 }
