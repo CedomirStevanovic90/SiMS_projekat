@@ -40,13 +40,19 @@ namespace SiMS_projekat.View
 
         private void createBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (nameTextBox.Text == "" || producerTextBox.Text == "" || quantityTextBox.Text == "" ||
-               priceTextBox.Text == "")
+            if (nameTextBox.Text.Equals("") || producerTextBox.Text.Equals("") || quantityTextBox.Text.Equals("") ||
+               priceTextBox.Text.Equals(""))
             {
                 MessageBox.Show("Unesite sve navedene podatke!");
                 return;
             }
+            AddNewMedicine();
+            ViewAllMedicinesPage.medicineDataGrid.ItemsSource = medicineController.GetAll();
+            this.Hide();
+        }
 
+        private void AddNewMedicine()
+        {
             Medicine medicine = new Medicine();
             medicine.MedicineCode = DateTime.Now.GetHashCode().ToString().Substring(1);
             medicine.Name = nameTextBox.Text;
@@ -56,7 +62,7 @@ namespace SiMS_projekat.View
             medicine.Accepted = (bool)acceptedCheckBox.IsChecked;
             medicine.Rejected = (bool)rejectedCheckBox.IsChecked;
             List<IngredientDTO> ingredientDTOs = new List<IngredientDTO>();
-            foreach(var i in ingredientsForMedicine)
+            foreach (var i in ingredientsForMedicine)
             {
                 IngredientDTO ingredientDTO = new IngredientDTO();
                 ingredientDTO.IngredientId = i.IngredientId;
@@ -64,8 +70,6 @@ namespace SiMS_projekat.View
             }
             medicine.Ingredients = ingredientDTOs;
             medicineController.Add(medicine);
-            ViewAllMedicinesPage.medicineDataGrid.ItemsSource = medicineController.GetAll();
-            this.Hide();
         }
     }
 }

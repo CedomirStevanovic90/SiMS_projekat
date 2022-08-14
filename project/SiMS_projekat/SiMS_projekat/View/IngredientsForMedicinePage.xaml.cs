@@ -28,7 +28,22 @@ namespace SiMS_projekat.View
         {
             InitializeComponent();
             ingredients = ingredientController.GetAll();
-            if(CreateNewMedicinePage.ingredientsForMedicine.Count() >= 1)
+            ViewIngredients();
+        }
+
+        private void addIngredientBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AddIngredientToMedicine();
+        }
+
+        private void backBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void ViewIngredients()
+        {
+            if (CreateNewMedicinePage.ingredientsForMedicine.Count() >= 1)
             {
                 myIngredientsDataGrid.ItemsSource = CreateNewMedicinePage.remainingIngredients;
                 ingredientsDataGrid = myIngredientsDataGrid;
@@ -40,7 +55,7 @@ namespace SiMS_projekat.View
             }
         }
 
-        private void addIngredientBtn_Click(object sender, RoutedEventArgs e)
+        private void AddIngredientToMedicine()
         {
             Ingredient ingredient = (myIngredientsDataGrid.SelectedItem as Ingredient);
             ingredients.Remove(ingredient);
@@ -48,11 +63,6 @@ namespace SiMS_projekat.View
             CreateNewMedicinePage.ingredientsForMedicine.Add(ingredient);
             myIngredientsDataGrid.ItemsSource = ingredients;
             myIngredientsDataGrid.Items.Refresh();
-        }
-
-        private void backBtn_Click(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
         }
     }
 }

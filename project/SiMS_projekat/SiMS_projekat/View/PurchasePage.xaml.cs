@@ -23,36 +23,24 @@ namespace SiMS_projekat.View
     public partial class PurchasePage : Window
     {
         private MedicineController medicineController = new MedicineController();
-        private string code;
-        private Medicine medicine;
-        public PurchasePage(string code)
+        private string medicineCode;
+        public PurchasePage(string medicineCode)
         {
             InitializeComponent();
-            this.code = code;
-            medicine = medicineController.GetAll().FirstOrDefault(m => m.MedicineCode == code);
+            this.medicineCode = medicineCode;
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(quantityTextBox.Text != "" && datePickerBox.Text == "")
+            if((!quantityTextBox.Text.Equals("")) && datePickerBox.Text.Equals(""))
             {
-                medicine.Quantity += int.Parse(quantityTextBox.Text);
-                medicineController.Update(medicine);
+                medicineController.PurchaseMedicine(int.Parse(quantityTextBox.Text), medicineCode);
                 ViewAllMedicinesPage.medicineDataGrid.ItemsSource = medicineController.GetAll();
-                ViewAllMedicinesPage.medicineDataGrid.Items.Refresh();
                 this.Hide();
             }
-            else if (quantityTextBox.Text != "" && datePickerBox.Text != "")
+            else if ((!quantityTextBox.Text.Equals("")) && (!datePickerBox.Text.Equals("")))
             {
-                MedicineDTO medicineDTO = new MedicineDTO();
-                medicineDTO.Quantity = int.Parse(quantityTextBox.Text);
-                medicineDTO.Date = DateTime.Parse(datePickerBox.Text);
-                if(medicine.MedicinesPurchase == null)
-                {
-                    medicine.MedicinesPurchase = new List<MedicineDTO>();
-                }
-                medicine.MedicinesPurchase.Add(medicineDTO);
-                medicineController.Update(medicine);
+                medicineController.PurchaseMedicineAtSpecificTime(int.Parse(quantityTextBox.Text), DateTime.Parse(datePickerBox.Text), medicineCode);
                 this.Hide();
             }
             else

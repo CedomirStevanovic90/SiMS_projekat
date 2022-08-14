@@ -10,12 +10,7 @@ namespace SiMS_projekat.Controller
 {
     class UserController
     {
-        private UserService userService = new UserService();
-
-        public UserController()
-        {
-
-        }
+        private IUserService userService = new UserService();
 
         public List<User> GetAll()
         {
@@ -37,19 +32,54 @@ namespace SiMS_projekat.Controller
             userService.Delete(id);
         }
 
-        public string SignIn(string email, string password)
+        public User GetById(int userId)
         {
-            return userService.SignIn(email, password);
+            return userService.GetById(userId);
         }
 
-        public List<User> sortingUsers(string typeOfSorting, List<User> usersForSorting)
+        public User FindLoggedUser(string email, string password)
         {
-            return userService.sortingUsers(typeOfSorting, usersForSorting);
+            return userService.FindLoggedUser(email, password);
         }
 
-        public List<User> filteringUsers(string typeOfFiltering, List<User> usersForFiltering)
+        public List<User> SortUsersByNameAsc(List<User> users)
         {
-            return userService.filteringUsers(typeOfFiltering, usersForFiltering);
+            return userService.SortUsersByNameAsc(users);
+        }
+
+        public List<User> SortUsersByNameDesc(List<User> users)
+        {
+            return userService.SortUsersByNameDesc(users);
+        }
+
+        public List<User> SortUsersBySurnameAsc(List<User> users)
+        {
+            return userService.SortUsersBySurnameAsc(users);
+        }
+
+        public List<User> SortUsersBySurnameDesc(List<User> users)
+        {
+            return userService.SortUsersBySurnameDesc(users);
+        }
+
+        public List<User> FilterAllManagers(List<User> users)
+        {
+            return userService.FilterAllManagers(users);
+        }
+
+        public List<User> FilterAllPharmacists(List<User> users)
+        {
+            return userService.FilterAllPharmacists(users);
+        }
+
+        public List<User> FilterAllDoctors(List<User> users)
+        {
+            return userService.FilterAllDoctors(users);
+        }
+
+        public bool AreJmbgAndEmailValid(string jmbg, string email)
+        {
+            return userService.AreJmbgAndEmailValid(jmbg, email);
         }
     }
 }

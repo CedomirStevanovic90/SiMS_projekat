@@ -31,26 +31,32 @@ namespace SiMS_projekat.View
 
         private void registrationBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(jmbgTextBox.Text == "" || nameTextBox.Text == "" || surnameTextBox.Text == "" || 
-               emailTextBox.Text == "" || passwordTextBox.Text == "" || mobileTextBox.Text == "" || 
-               comboBox.Text == "")
+            if(jmbgTextBox.Text.Equals("") || nameTextBox.Text.Equals("") || surnameTextBox.Text.Equals("") || 
+               emailTextBox.Text.Equals("") || passwordTextBox.Text.Equals("") || mobileTextBox.Text.Equals("") || 
+               comboBox.Text.Equals(""))
             {
                 MessageBox.Show("Unesite sve navedene podatke!");
                 return;
             }
-
             if(jmbgTextBox.Text.Length != 13)
             {
                 MessageBox.Show("Potrebno je da unesete 13 karaktera za JMBG!");
                 return;
             }
-
-            bool checkJmbgEmail = checkJmbgOrEmail(jmbgTextBox.Text, emailTextBox.Text);
+            bool checkJmbgEmail = userController.AreJmbgAndEmailValid(jmbgTextBox.Text, emailTextBox.Text);
             if (checkJmbgEmail)
             {
                 MessageBox.Show("Uneli ste vec postojeci E-mail ili JMBG!");
                 return;
             }
+            RegisterUser();
+            ViewAllUsersPage.usersDataGrid.ItemsSource = userController.GetAll();
+            this.Hide();
+
+        }
+
+        private void RegisterUser()
+        {
             User user = new User();
             user.UserId = id;
             user.Jmbg = jmbgTextBox.Text;
@@ -60,24 +66,8 @@ namespace SiMS_projekat.View
             user.Password = passwordTextBox.Text;
             user.MobilePhone = mobileTextBox.Text;
             user.UserType = comboBox.Text;
-            user.Blocked = (bool) blockedCheckBox.IsChecked;
+            user.Blocked = (bool)blockedCheckBox.IsChecked;
             userController.Add(user);
-            ViewAllUsersPage.usersDataGrid.ItemsSource = userController.GetAll();
-            this.Hide();
-
-        }
-
-        public bool checkJmbgOrEmail(String jmbg, String email)
-        {
-            List<User> users = userController.GetAll();
-            for(int i = 0; i < users.Count(); i++)
-            {
-                if(users[i].Jmbg == jmbg || users[i].Email == email)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }

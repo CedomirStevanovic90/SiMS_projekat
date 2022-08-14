@@ -58,26 +58,59 @@ namespace SiMS_projekat.View
         {
             int id = (myUsersDataGrid.SelectedItem as User).UserId;
             userController.Delete(id);
-            List<User> updatedUsers = userController.GetAll();
-            usersDataGrid.ItemsSource = updatedUsers;
+            usersDataGrid.ItemsSource = userController.GetAll();
         }
 
         private void comboBoxSorting_DropDownClosed(object sender, EventArgs e)
         {
-            filteringAndSorting();
+            filteredUsers = userController.GetAll();
+            FilterUsers();
+            SortUsers();
+            usersDataGrid.ItemsSource = filteredUsers;
         }
 
         private void comboBoxFiltering_DropDownClosed(object sender, EventArgs e)
         {
-            filteringAndSorting();
+            filteredUsers = userController.GetAll();
+            FilterUsers();
+            SortUsers();
+            usersDataGrid.ItemsSource = filteredUsers;
         }
 
-        private void filteringAndSorting()
+        private void SortUsers()
         {
-            filteredUsers = userController.GetAll();
-            filteredUsers = userController.filteringUsers(comboBoxFiltering.Text, filteredUsers);
-            filteredUsers = userController.sortingUsers(comboBoxSorting.Text, filteredUsers);
-            usersDataGrid.ItemsSource = filteredUsers;
+            if (comboBoxSorting.Text.Equals("Sort by name (A-Z)"))
+            {
+                filteredUsers = userController.SortUsersByNameAsc(filteredUsers);
+            }
+            else if (comboBoxSorting.Text.Equals("Sort by name (Z-A)"))
+            {
+                filteredUsers = userController.SortUsersByNameDesc(filteredUsers);
+            }
+            else if (comboBoxSorting.Text.Equals("Sort by surname (A-Z)"))
+            {
+                filteredUsers = userController.SortUsersBySurnameAsc(filteredUsers);
+            }
+            else if (comboBoxSorting.Text.Equals("Sort by surname (Z-A)"))
+            {
+                filteredUsers = userController.SortUsersBySurnameDesc(filteredUsers);
+            }
+        }
+
+        private void FilterUsers()
+        {
+            if (comboBoxFiltering.Text.Equals("Filter by Manager"))
+            {
+                filteredUsers = userController.FilterAllManagers(filteredUsers);
+            }
+            else if (comboBoxFiltering.Text.Equals("Filter by Doctor"))
+            {
+                filteredUsers = userController.FilterAllDoctors(filteredUsers);
+            }
+            else if (comboBoxFiltering.Text.Equals("Filter by Pharmacist"))
+            {
+                filteredUsers = userController.FilterAllPharmacists(filteredUsers);
+            }
         }
     }
 }

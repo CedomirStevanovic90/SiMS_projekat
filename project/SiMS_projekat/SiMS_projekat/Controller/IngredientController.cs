@@ -10,12 +10,7 @@ namespace SiMS_projekat.Controller
 {
     class IngredientController
     {
-        private IngredientService ingredientService = new IngredientService();
-
-        public IngredientController()
-        {
-
-        }
+        private IIngredientService ingredientService = new IngredientService();
 
         public List<Ingredient> GetAll()
         {
@@ -35,6 +30,10 @@ namespace SiMS_projekat.Controller
         public void Delete(int id)
         {
             ingredientService.Delete(id);
+        }
+        public Ingredient GetById(int id)
+        {
+            return ingredientService.GetById(id);
         }
     }
 }

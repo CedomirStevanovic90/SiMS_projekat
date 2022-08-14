@@ -9,7 +9,7 @@ using SiMS_projekat.Model;
 
 namespace SiMS_projekat.Repository
 {
-    class MedicineRepository : GenericRepository<string, Medicine>
+    class MedicineRepository : GenericRepository<string, Medicine>, IMedicineRepository
     {
         public const string MedicineFile = @"..\..\Data\Medicine.txt";
 
@@ -77,6 +77,20 @@ namespace SiMS_projekat.Repository
                 }
             }
             Write(medicines);
+        }
+
+        public override Medicine GetById(string medicineCode)
+        {
+            Medicine medicine = new Medicine();
+            List<Medicine> medicines = GetAll();
+            for (int i = 0; i < medicines.Count(); i++)
+            {
+                if (medicines[i].MedicineCode == medicineCode)
+                {
+                    medicine = medicines[i];
+                }
+            }
+            return medicine;
         }
     }
 }

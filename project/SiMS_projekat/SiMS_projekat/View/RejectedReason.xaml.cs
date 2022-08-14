@@ -23,30 +23,24 @@ namespace SiMS_projekat.View
     {
         private MedicineController medicineController = new MedicineController();
         private UserController userController = new UserController();
-        private Medicine medicine = new Medicine();
-        private string code;
+        private string medicineCode;
         private string Jmbg;
-        public RejectedReason(string id, string jmbg)
+        public RejectedReason(string medicineCode, string jmbg)
         {
             InitializeComponent();
-            this.code = id;
+            this.medicineCode = medicineCode;
             this.Jmbg = jmbg;
-            medicine = medicineController.GetAll().FirstOrDefault(m => m.MedicineCode == id);
         }
 
         private void acceptBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(acceptTextBox.Text == "")
+            if(acceptTextBox.Text.Equals(""))
             {
                 MessageBox.Show("Unesite komentar!");
             }
             else
             {
-                User user = userController.GetAll().FirstOrDefault(u => u.Jmbg == Jmbg);
-                string details = user.Name + " " + user.Surname + " " + acceptTextBox.Text + ".";
-                medicine.RejectedDetails = medicine.RejectedDetails + details;
-                medicine.Rejected = true;
-                medicineController.Update(medicine);
+                medicineController.SetReasonForRejectingMedicine(acceptTextBox.Text, medicineCode, userController.GetAll().FirstOrDefault(u => u.Jmbg == Jmbg));
                 this.Hide();
             }
         }

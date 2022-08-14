@@ -12,6 +12,7 @@ namespace SiMS_projekat.Repository
         public abstract Entity Add(Entity entity);
         public abstract Entity Update(Entity entity);
         public abstract void Delete(KeyType keyType);
+        public abstract Entity GetById(KeyType keyType);
 
     }
 }

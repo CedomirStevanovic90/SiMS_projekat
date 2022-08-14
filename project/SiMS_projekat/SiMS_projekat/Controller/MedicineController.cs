@@ -10,12 +10,7 @@ namespace SiMS_projekat.Controller
 {
     class MedicineController
     {
-        public MedicineService medicineService = new MedicineService();
-
-        public MedicineController()
-        {
-
-        }
+        public IMedicineService medicineService = new MedicineService();
 
         public List<Medicine> GetAll()
         {
@@ -37,66 +32,114 @@ namespace SiMS_projekat.Controller
             medicineService.Delete(id);
         }
 
-        public List<Medicine> sortingAllMedicines(string typeOfSorting, List<Medicine> medicinesForSorting)
+        public Medicine GetById(string medicineCode)
         {
-            return medicineService.sortingMedicines(typeOfSorting, medicinesForSorting);
+            return medicineService.GetById(medicineCode);
         }
 
-        public List<Medicine> sortingAcceptedMedicines(string typeOfSorting, string userType, List<Medicine> acceptedMedicinesForSorting)
+        public List<Medicine> SortMedicinesByNameAsc(List<Medicine> medicines)
         {
-            if (userType == "Pharmacist" && typeOfSorting == "No sort")
-            {
-                return GetAll().Where(m => m.Accepted == true).ToList();
-            }
-            else if (userType == "Pharmacist")
-            {
-                return medicineService.sortingMedicines(typeOfSorting, acceptedMedicinesForSorting);
-            }
-            return acceptedMedicinesForSorting;
+            return medicineService.SortMedicinesByNameAsc(medicines);
         }
 
-        public List<Medicine> sortingRejectedMedicines(string typeOfSorting, string userType, List<Medicine> rejectedMedicinesForSorting)
+        public List<Medicine> SortMedicinesByNameDesc(List<Medicine> medicines)
         {
-            if (userType == "Pharmacist" && typeOfSorting == "No sort")
-            {
-                return GetAll().Where(m => m.Rejected == true).ToList();
-            }
-            else if (userType == "Pharmacist")
-            {
-                return medicineService.sortingMedicines(typeOfSorting, rejectedMedicinesForSorting);
-            }
-            return rejectedMedicinesForSorting;
+            return medicineService.SortMedicinesByNameDesc(medicines);
         }
 
-        public List<Medicine> searchingAllMedicines(string typeOfSearching, string contentForSearch, List<Medicine> medicines, List<Medicine> medicinesForSearching)
+        public List<Medicine> SortMedicinesByPriceAsc(List<Medicine> medicines)
         {
-            return medicineService.searchingMedicines(typeOfSearching, contentForSearch, medicines, medicinesForSearching);
+            return medicineService.SortMedicinesByPriceAsc(medicines);
         }
 
-        public List<Medicine> searchingAcceptedMedicines(string typeOfSearching, string contentForSearch, string userType, List<Medicine> medicines, List<Medicine> acceptedMedicineForSearching)
+        public List<Medicine> SortMedicinesByPriceDesc(List<Medicine> medicines)
         {
-            if (userType == "Pharmacist" && typeOfSearching == "No search")
-            {
-                return GetAll().Where(m => m.Accepted == true).ToList();
-            }
-            else if (userType == "Pharmacist")
-            {
-                return medicineService.searchingMedicines(typeOfSearching, contentForSearch, medicines, acceptedMedicineForSearching);
-            }
-            return acceptedMedicineForSearching;
+            return medicineService.SortMedicinesByPriceDesc(medicines);
         }
 
-        public List<Medicine> searchingRejectedMedicines(string typeOfSearching, string contentForSearch, string userType, List<Medicine> medicines, List<Medicine> rejectedMedicineForSearching)
+        public List<Medicine> SortMedicinesByQuantityAsc(List<Medicine> medicines)
         {
-            if (userType == "Pharmacist" && typeOfSearching == "No search")
-            {
-                return GetAll().Where(m => m.Rejected == true).ToList();
-            }
-            else if (userType == "Pharmacist")
-            {
-                return medicineService.searchingMedicines(typeOfSearching, contentForSearch, medicines, rejectedMedicineForSearching);
-            }
-            return rejectedMedicineForSearching;
+            return medicineService.SortMedicinesByQuantityAsc(medicines);
+        }
+
+        public List<Medicine> SortMedicinesByQuantityDesc(List<Medicine> medicines)
+        {
+            return medicineService.SortMedicinesByQuantityDesc(medicines);
+        }
+
+        public List<Medicine> SearchMedicinesByMedicineCode(string contentForSearch, List<Medicine> medicines)
+        {
+            return medicineService.SearchMedicinesByMedicineCode(contentForSearch, medicines);
+        }
+
+        public List<Medicine> SearchMedicinesByName(string contentForSearch, List<Medicine> medicines)
+        {
+            return medicineService.SearchMedicinesByName(contentForSearch, medicines);
+        }
+
+        public List<Medicine> SearchMedicinesByProducer(string contentForSearch, List<Medicine> medicines)
+        {
+            return medicineService.SearchMedicinesByProducer(contentForSearch, medicines);
+        }
+
+        public List<Medicine> SearchMedicinesByQuantity(string contentForSearch, List<Medicine> medicines)
+        {
+            return medicineService.SearchMedicinesByQuantity(contentForSearch, medicines);
+        }
+
+        public List<Medicine> SearchMedicinesByPriceRange(string contentForSearch, List<Medicine> medicines)
+        {
+            return medicineService.SearchMedicinesByPriceRange(contentForSearch, medicines);
+        }
+
+        public List<Medicine> SearchMedicinesByIngredients(string contentForSearch, List<Medicine> medicines)
+        {
+            return medicineService.SearchMedicinesByIngredients(contentForSearch, medicines);
+        }
+
+        public List<Ingredient> GetMedicineIngredients(string code, List<Ingredient> ingredients)
+        {
+            return medicineService.GetMedicineIngredients(code, ingredients);
+        }
+
+        public void SetReasonForRejectingMedicine(string reason, string medicineCode, User user)
+        {
+            medicineService.SetReasonForRejectingMedicine(reason, medicineCode, user);
+        }
+
+        public void PurchaseMedicine(int quantity, string medicineCode)
+        {
+            medicineService.PurchaseMedicine(quantity, medicineCode);
+        }
+
+        public void PurchaseMedicineAtSpecificTime(int quantity, DateTime dateOfPurchase, string medicineCode)
+        {
+            medicineService.PurchaseMedicineAtSpecificTime(quantity, dateOfPurchase, medicineCode);
+        }
+
+        public void OrderMedicine()
+        {
+            medicineService.OrderMedicine();
+        }
+
+        public bool IsMedicineAccepted(string jmbg, Medicine medicine)
+        {
+            return medicineService.IsMedicineAccepted(jmbg, medicine);
+        }
+
+        public Medicine AcceptMedicineByDoctor(Medicine medicine)
+        {
+            return medicineService.AcceptMedicineByDoctor(medicine);
+        }
+
+        public Medicine AcceptMedicineByPharmacist(Medicine medicine)
+        {
+            return medicineService.AcceptMedicineByPharmacist(medicine);
+        }
+
+        public Medicine AcceptMedicine(Medicine medicine)
+        {
+            return medicineService.AcceptMedicine(medicine);
         }
     }
 }

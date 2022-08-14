@@ -34,26 +34,28 @@ namespace SiMS_projekat.View
         {
             InitializeComponent();
             this.userType = userType;
+            this.Jmbg = jmbg;
             medicines = medicineController.GetAll();
+            acceptedMedicines = medicineController.GetAll().Where(m => m.Accepted == true).ToList();
+            rejectedMedicines = medicineController.GetAll().Where(m => m.Rejected == true).ToList();
             myMedicinesDataGrid.ItemsSource = medicines;
             medicineDataGrid = myMedicinesDataGrid;
-            this.Jmbg = jmbg;
-            viewSetup();
+            ViewSetup();
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(userType == "Manager")
+            if(userType.Equals("Manager"))
             {
                 UpravnikHomepage upravnikHomepage = new UpravnikHomepage();
                 upravnikHomepage.Show();
             }
-            else if(userType == "Doctor")
+            else if(userType.Equals("Doctor"))
             {
                 LekarHomepage lekarHomepage = new LekarHomepage(Jmbg, userType);
                 lekarHomepage.Show();
             }
-            else if (userType == "Pharmacist")
+            else if (userType.Equals("Pharmacist"))
             {
                 FarmaceutHomepage farmaceutHomepage = new FarmaceutHomepage(Jmbg, userType);
                 farmaceutHomepage.Show();
@@ -70,55 +72,42 @@ namespace SiMS_projekat.View
 
         private void updateBtn_Click(object sender, RoutedEventArgs e)
         {
-            string id = (myMedicinesDataGrid.SelectedItem as Medicine).MedicineCode;
-            UpdateMedicinePage updateMedicinePage = new UpdateMedicinePage(id);
+            string code = (myMedicinesDataGrid.SelectedItem as Medicine).MedicineCode;
+            UpdateMedicinePage updateMedicinePage = new UpdateMedicinePage(code);
             updateMedicinePage.Show();
         }
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            string id = (myMedicinesDataGrid.SelectedItem as Medicine).MedicineCode;
-            medicineController.Delete(id);
+            string code = (myMedicinesDataGrid.SelectedItem as Medicine).MedicineCode;
+            medicineController.Delete(code);
             medicineDataGrid.ItemsSource = medicineController.GetAll();
         }
 
         private void comboBoxSorting_DropDownClosed(object sender, EventArgs e)
         {
             filteredMedicines = medicineController.GetAll();
-            acceptedMedicines = medicineController.sortingAcceptedMedicines(comboBoxSorting.Text, userType, acceptedMedicines);
-            rejectedMedicines = medicineController.sortingRejectedMedicines(comboBoxSorting.Text, userType, rejectedMedicines);
-            filteredMedicines = medicineController.sortingAllMedicines(comboBoxSorting.Text, filteredMedicines);
+            SortMedicines();
             medicineDataGrid.ItemsSource = filteredMedicines;
         }
 
         private void searchBtn_Click(object sender, RoutedEventArgs e)
         {
             filteredMedicines = medicineController.GetAll();
-            acceptedMedicines = medicineController.searchingAcceptedMedicines(searchComboBox.Text, searchTextBox.Text, userType,
-                    medicines, acceptedMedicines);
-            rejectedMedicines = medicineController.searchingRejectedMedicines(searchComboBox.Text, searchTextBox.Text, userType,
-                    medicines, rejectedMedicines);
-            filteredMedicines = medicineController.searchingAllMedicines(searchComboBox.Text, searchTextBox.Text, medicines,
-                filteredMedicines);
+            SearchMedicines();
             medicineDataGrid.ItemsSource = filteredMedicines;
         }
 
         private void ingredientsBtn_Click(object sender, RoutedEventArgs e)
+        { 
+            List<Ingredient> medicineIngredients = medicineController.GetMedicineIngredients(
+                (myMedicinesDataGrid.SelectedItem as Medicine).MedicineCode, ingredientController.GetAll());
+            ViewIngredientsForMedicine(medicineIngredients);
+        }
+
+        private static void ViewIngredientsForMedicine(List<Ingredient> medicineIngredients)
         {
-            string code = (myMedicinesDataGrid.SelectedItem as Medicine).MedicineCode;
-            Medicine medicine = medicineController.GetAll().FirstOrDefault(m => m.MedicineCode == code);
-            List<Ingredient> medicineIngredients = new List<Ingredient>();
-            foreach(var i in ingredientController.GetAll())
-            {
-                foreach(var im in medicine.Ingredients)
-                {
-                    if(i.IngredientId == im.IngredientId)
-                    {
-                        medicineIngredients.Add(i);
-                    }
-                }
-            }
-            if(medicineIngredients.Count() == 0)
+            if (medicineIngredients.Count() == 0)
             {
                 MessageBox.Show("Za dati lek nisu navedeni sastojci!");
             }
@@ -126,7 +115,7 @@ namespace SiMS_projekat.View
             {
                 MedicineIngredients medicineIngredientss = new MedicineIngredients(medicineIngredients);
                 medicineIngredientss.Show();
-            }                    
+            }
         }
 
         private void acceptedAndRejectedBtn_Click(object sender, RoutedEventArgs e)
@@ -142,13 +131,93 @@ namespace SiMS_projekat.View
             purchasePage.Show();
         }
 
-        private void viewSetup()
+        private void SortMedicines()
         {
-            if (userType == "Manager")
+            if (comboBoxSorting.Text.Equals("Sort by name (A-Z)"))
+            {
+                filteredMedicines = medicineController.SortMedicinesByNameAsc(filteredMedicines);
+                acceptedMedicines = medicineController.SortMedicinesByNameAsc(acceptedMedicines);
+                rejectedMedicines = medicineController.SortMedicinesByNameAsc(rejectedMedicines);
+            }
+            else if (comboBoxSorting.Text.Equals("Sort by name (Z-A)"))
+            {
+                filteredMedicines = medicineController.SortMedicinesByNameDesc(filteredMedicines);
+                acceptedMedicines = medicineController.SortMedicinesByNameDesc(acceptedMedicines);
+                rejectedMedicines = medicineController.SortMedicinesByNameDesc(rejectedMedicines);
+            }
+            else if (comboBoxSorting.Text.Equals("Sort by price (Low - High)"))
+            {
+                filteredMedicines = medicineController.SortMedicinesByPriceAsc(filteredMedicines);
+                acceptedMedicines = medicineController.SortMedicinesByPriceAsc(acceptedMedicines);
+                rejectedMedicines = medicineController.SortMedicinesByPriceAsc(rejectedMedicines);
+            }
+            else if (comboBoxSorting.Text.Equals("Sort by price (High - Low)"))
+            {
+                filteredMedicines = medicineController.SortMedicinesByPriceDesc(filteredMedicines);
+                acceptedMedicines = medicineController.SortMedicinesByPriceDesc(acceptedMedicines);
+                rejectedMedicines = medicineController.SortMedicinesByPriceDesc(rejectedMedicines);
+            }
+            else if (comboBoxSorting.Text.Equals("Sort by quantity (Low - High)"))
+            {
+                filteredMedicines = medicineController.SortMedicinesByQuantityAsc(filteredMedicines);
+                acceptedMedicines = medicineController.SortMedicinesByQuantityAsc(acceptedMedicines);
+                rejectedMedicines = medicineController.SortMedicinesByQuantityAsc(rejectedMedicines);
+            }
+            else if (comboBoxSorting.Text.Equals("Sort by quantity (High - Low)"))
+            {
+                filteredMedicines = medicineController.SortMedicinesByQuantityDesc(filteredMedicines);
+                acceptedMedicines = medicineController.SortMedicinesByQuantityDesc(acceptedMedicines);
+                rejectedMedicines = medicineController.SortMedicinesByQuantityDesc(rejectedMedicines);
+            }
+        }
+
+        private void SearchMedicines()
+        {
+            if (searchComboBox.Text.Equals("Search by Medicine Code"))
+            {
+                filteredMedicines = medicineController.SearchMedicinesByMedicineCode(searchTextBox.Text, filteredMedicines);
+                acceptedMedicines = medicineController.SearchMedicinesByMedicineCode(searchTextBox.Text, acceptedMedicines);
+                rejectedMedicines = medicineController.SearchMedicinesByMedicineCode(searchTextBox.Text, rejectedMedicines);
+            }
+            else if (searchComboBox.Text.Equals("Search by Name"))
+            {
+                filteredMedicines = medicineController.SearchMedicinesByName(searchTextBox.Text, filteredMedicines);
+                acceptedMedicines = medicineController.SearchMedicinesByName(searchTextBox.Text, acceptedMedicines);
+                rejectedMedicines = medicineController.SearchMedicinesByName(searchTextBox.Text, rejectedMedicines);
+            }
+            else if (searchComboBox.Text.Equals("Search by Producer"))
+            {
+                filteredMedicines = medicineController.SearchMedicinesByProducer(searchTextBox.Text, filteredMedicines);
+                acceptedMedicines = medicineController.SearchMedicinesByProducer(searchTextBox.Text, acceptedMedicines);
+                rejectedMedicines = medicineController.SearchMedicinesByProducer(searchTextBox.Text, rejectedMedicines);
+            }
+            else if (searchComboBox.Text.Equals("Search by Quantity"))
+            {
+                filteredMedicines = medicineController.SearchMedicinesByQuantity(searchTextBox.Text, filteredMedicines);
+                acceptedMedicines = medicineController.SearchMedicinesByQuantity(searchTextBox.Text, acceptedMedicines);
+                rejectedMedicines = medicineController.SearchMedicinesByQuantity(searchTextBox.Text, rejectedMedicines);
+            }
+            else if (searchComboBox.Text.Equals("Search by Price range"))
+            {
+                filteredMedicines = medicineController.SearchMedicinesByPriceRange(searchTextBox.Text, filteredMedicines);
+                acceptedMedicines = medicineController.SearchMedicinesByPriceRange(searchTextBox.Text, acceptedMedicines);
+                rejectedMedicines = medicineController.SearchMedicinesByPriceRange(searchTextBox.Text, rejectedMedicines);
+            }
+            else if (searchComboBox.Text.Equals("Search by Ingredients"))
+            {
+                filteredMedicines = medicineController.SearchMedicinesByIngredients(searchTextBox.Text, filteredMedicines);
+                acceptedMedicines = medicineController.SearchMedicinesByIngredients(searchTextBox.Text, acceptedMedicines);
+                rejectedMedicines = medicineController.SearchMedicinesByIngredients(searchTextBox.Text, rejectedMedicines);
+            }
+        }
+
+        private void ViewSetup()
+        {
+            if (userType.Equals("Manager"))
             {
                 acceptedAndRejectedBtn.IsEnabled = false;
             }
-            else if (userType == "Doctor")
+            else if (userType.Equals("Doctor"))
             {
                 acceptedAndRejectedBtn.IsEnabled = false;
                 createBtn.IsEnabled = false;
@@ -160,8 +229,6 @@ namespace SiMS_projekat.View
                 createBtn.IsEnabled = false;
                 myMedicinesDataGrid.Columns[8].Visibility = Visibility.Hidden;
                 myMedicinesDataGrid.Columns[10].Visibility = Visibility.Hidden;
-                acceptedMedicines = medicineController.GetAll().Where(m => m.Accepted == true).ToList();
-                rejectedMedicines = medicineController.GetAll().Where(m => m.Rejected == true).ToList();
             }
         }
     }

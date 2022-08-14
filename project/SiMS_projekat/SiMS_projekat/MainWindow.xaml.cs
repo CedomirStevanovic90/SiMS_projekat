@@ -23,42 +23,53 @@ namespace SiMS_projekat
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<User> users;
         private UserController userController = new UserController();
         private MedicineController medicineController = new MedicineController();
         private int counter = 3;
         public MainWindow()
         {
             InitializeComponent();
-            users = userController.GetAll();
-            foreach(var m in medicineController.GetAll())
-            {
-                if(m.MedicinesPurchase != null)
-                {
-                    for(int i = 0; i < m.MedicinesPurchase.Count; i++)
-                    {
-                        if(m.MedicinesPurchase[i].Date < DateTime.Now)
-                        {
-                            m.Quantity += m.MedicinesPurchase[i].Quantity;
-                            m.MedicinesPurchase.Remove(m.MedicinesPurchase[i]);
-                            medicineController.Update(m);
-                        }
-                    }
-                }
-            }
+            medicineController.OrderMedicine();
         }
 
         private void signInBtn_Click(object sender, RoutedEventArgs e)
         {
-            string checkSignIn = userController.SignIn(emailBox.Text, passwordBox.Password);
-            if(checkSignIn == "Close")
+            User checkedUser = userController.FindLoggedUser(emailBox.Text, passwordBox.Password);
+            if (checkedUser == null)
             {
-                this.Close();
+                int number = counter - 1;
+                if (number == 0)
+                {
+                    MessageBox.Show("Iskoristili ste moguci broj pokusaja!");
+                    this.Close();
+                    return;
+                }
+                MessageBox.Show("Niste uneli dobre kredencijale!\n Preostali broj pokusaja: " + number);
+                counter--;
+                return;
             }
-            else if(checkSignIn == "Hide")
+            if (checkedUser.Blocked == true)
             {
-                this.Hide();
+                MessageBox.Show("Korisnik sa unetim e-mailom i passwordom je blokiran!");
+                return;
             }
+            if (checkedUser.UserType.Equals("Manager"))
+            {
+                UpravnikHomepage upravnikHomepage = new UpravnikHomepage();
+                upravnikHomepage.Show();
+
+            }
+            else if (checkedUser.UserType.Equals("Doctor"))
+            {
+                LekarHomepage lekarHomepage = new LekarHomepage(checkedUser.Jmbg, "Doctor");
+                lekarHomepage.Show();
+            }
+            else if (checkedUser.UserType.Equals("Pharmacist"))
+            {
+                FarmaceutHomepage farmaceutHomepage = new FarmaceutHomepage(checkedUser.Jmbg, "Pharmacist");
+                farmaceutHomepage.Show();
+            }
+            this.Hide();
         }
     }
 }

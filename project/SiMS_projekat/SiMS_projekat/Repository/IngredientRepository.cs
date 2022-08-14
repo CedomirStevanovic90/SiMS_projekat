@@ -9,7 +9,7 @@ using SiMS_projekat.Model;
 
 namespace SiMS_projekat.Repository
 {
-    class IngredientRepository : GenericRepository<int, Ingredient>
+    class IngredientRepository : GenericRepository<int, Ingredient>, IIngredientRepository
     {
         public const string IngredientFile = @"..\..\Data\Ingredient.txt";
 
@@ -78,6 +78,20 @@ namespace SiMS_projekat.Repository
                 }
             }
             Write(ingredients);
+        }
+
+        public override Ingredient GetById(int ingredientId)
+        {
+            Ingredient ingredient = new Ingredient();
+            List<Ingredient> ingredients = GetAll();
+            for (int i = 0; i < ingredients.Count(); i++)
+            {
+                if (ingredients[i].IngredientId == ingredientId)
+                {
+                    ingredient = ingredients[i];
+                }
+            }
+            return ingredient;
         }
     }
 }

@@ -25,19 +25,23 @@ namespace SiMS_projekat.View
         private UserController userController = new UserController();
         private int id;
         private User user;
-        private List<User> users;
         public UpdateUserPage(int id)
         {
             InitializeComponent();
             this.id = id;
-            users = userController.GetAll();
-            for (int i = 0; i < users.Count(); i++)
-            {
-                if (users[i].UserId == id)
-                {
-                    user = users[i];
-                }
-            }
+            ViewUpdateUser();
+        }
+
+        private void updateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateUser();
+            ViewAllUsersPage.usersDataGrid.ItemsSource = userController.GetAll();
+            this.Hide();
+        }
+
+        private void ViewUpdateUser()
+        {
+            user = userController.GetById(id);
             jmbgTextBox.Text = user.Jmbg;
             nameTextBox.Text = user.Name;
             surnameTextBox.Text = user.Surname;
@@ -48,7 +52,7 @@ namespace SiMS_projekat.View
             blockedCheckBox.IsChecked = user.Blocked;
         }
 
-        private void updateBtn_Click(object sender, RoutedEventArgs e)
+        private void UpdateUser()
         {
             user.Jmbg = jmbgTextBox.Text;
             user.Name = nameTextBox.Text;
@@ -57,11 +61,8 @@ namespace SiMS_projekat.View
             user.Password = passwordTextBox.Text;
             user.MobilePhone = mobileTextBox.Text;
             user.UserType = comboBox.Text;
-            user.Blocked = (bool) blockedCheckBox.IsChecked;
+            user.Blocked = (bool)blockedCheckBox.IsChecked;
             userController.Update(user);
-            List<User> updatedUsers = userController.GetAll();
-            ViewAllUsersPage.usersDataGrid.ItemsSource = updatedUsers;
-            this.Hide();
         }
     }
 }

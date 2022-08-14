@@ -9,7 +9,7 @@ using SiMS_projekat.Model;
 
 namespace SiMS_projekat.Repository
 {
-    class UserRepository : GenericRepository<int, User>
+    class UserRepository : GenericRepository<int, User>, IUserRepository
     {
         private const string UserFile = @"..\..\Data\User.txt";
 
@@ -78,6 +78,20 @@ namespace SiMS_projekat.Repository
                 }
             }
             Write(users);
+        }
+
+        public override User GetById(int userId)
+        {
+            User user = new User();
+            List<User> users = GetAll();
+            for (int i = 0; i < users.Count(); i++)
+            {
+                if (users[i].UserId == userId)
+                {
+                    user = users[i];
+                }
+            }
+            return user;
         }
     }
 }

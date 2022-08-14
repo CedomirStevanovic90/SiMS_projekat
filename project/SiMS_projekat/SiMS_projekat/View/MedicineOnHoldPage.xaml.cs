@@ -28,46 +28,35 @@ namespace SiMS_projekat.View
         public MedicineOnHoldPage(string jmbg, string userType)
         {
             InitializeComponent();
-            myMedicinesOnHoldDataGrid.ItemsSource = medicineController.GetAll().Where(m => m.Accepted == false);
             this.Jmbg = jmbg;
             this.UserType = userType;
+            myMedicinesOnHoldDataGrid.ItemsSource = medicineController.GetAll().Where(m => m.Accepted == false);
             medicineOnHoldDataGrid = myMedicinesOnHoldDataGrid;
         }
 
         private void acceptBtn_Click(object sender, RoutedEventArgs e)
         {
             string id = (myMedicinesOnHoldDataGrid.SelectedItem as Medicine).MedicineCode;
-            Medicine medicine = medicineController.GetAll().FirstOrDefault(m => m.MedicineCode == id);
-            string[] detailsAccepted = null;
-            if(medicine.AcceptedDetails != null)
-            {
-                detailsAccepted = medicine.AcceptedDetails.Split(';');
-            }
-            if(detailsAccepted != null && detailsAccepted.Length > 0)
-            {
-                foreach(var m in detailsAccepted)
-                {
-                    if(Jmbg == m)
-                    {
-                        MessageBox.Show("Vec prihvaceno");
-                        return;
+            Medicine medicine = medicineController.GetById(id);
 
-                    }
-                }
+            if(medicineController.IsMedicineAccepted(Jmbg, medicine))
+            {
+                MessageBox.Show("Vec prihvaceno!");
+                return;
             }
+
             if (UserType.Equals("Doctor"))
             {
-                medicine.CountDoctors += 1;
+                medicine = medicineController.AcceptMedicineByDoctor(medicine);
             }
             else if (UserType.Equals("Pharmacist"))
             {
-                medicine.CountPharmacists += 1;
+                medicine = medicineController.AcceptMedicineByPharmacist(medicine);
             }
-            if(medicine.CountDoctors == 1 && medicine.CountPharmacists == 2)
+
+            if (medicine.DoctorCounter == 1 && medicine.PharmacistCounter == 2)
             {
-                medicine.Accepted = true;
-                medicine.Rejected = false;
-                medicine.RejectedDetails = null;
+                medicine = medicineController.AcceptMedicine(medicine);
             }
             string details = Jmbg + ";";
             medicine.AcceptedDetails = medicine.AcceptedDetails + details;
@@ -94,6 +83,12 @@ namespace SiMS_projekat.View
         private void rejectBtn_Click(object sender, RoutedEventArgs e)
         {
             string id = (myMedicinesOnHoldDataGrid.SelectedItem as Medicine).MedicineCode;
+            Medicine medicine = medicineController.GetById(id);
+            if(medicineController.IsMedicineAccepted(Jmbg, medicine))
+            {
+                MessageBox.Show("Prethodno ste vec odobrili ovaj lek, tako da nije moguce odbijanje!");
+                return;
+            }
             RejectedReason rejectedReason = new RejectedReason(id, Jmbg);
             rejectedReason.Show();
         }

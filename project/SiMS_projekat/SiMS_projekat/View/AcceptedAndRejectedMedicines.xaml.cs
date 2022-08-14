@@ -20,13 +20,9 @@ namespace SiMS_projekat.View
     /// </summary>
     public partial class AcceptedAndRejectedMedicines : Window
     {
-        private List<Medicine> acceptedMedicines;
-        private List<Medicine> rejectedMedicines;
         internal AcceptedAndRejectedMedicines(List<Medicine> accepted, List<Medicine> rejected)
         {
             InitializeComponent();
-            this.acceptedMedicines = accepted;
-            this.rejectedMedicines = rejected;
             myMedicinesAcceptedDataGrid.ItemsSource = accepted;
             myMedicinesRejectedDataGrid.ItemsSource = rejected;
         }

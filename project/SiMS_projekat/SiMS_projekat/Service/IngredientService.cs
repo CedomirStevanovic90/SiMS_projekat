@@ -8,14 +8,9 @@ using SiMS_projekat.Repository;
 
 namespace SiMS_projekat.Service
 {
-    class IngredientService
+    class IngredientService : IIngredientService
     {
-        private IngredientRepository ingredientRepository = new IngredientRepository();
-
-        public IngredientService()
-        {
-
-        }
+        private IIngredientRepository ingredientRepository = new IngredientRepository();
 
         public List<Ingredient> GetAll()
         {
@@ -35,6 +30,11 @@ namespace SiMS_projekat.Service
         public void Delete(int id)
         {
             ingredientRepository.Delete(id);
+        }
+
+        public Ingredient GetById(int id)
+        {
+            return ingredientRepository.GetById(id);
         }
     }
 }

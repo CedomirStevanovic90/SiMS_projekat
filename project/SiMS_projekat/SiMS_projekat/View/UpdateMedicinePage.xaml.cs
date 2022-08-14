@@ -22,21 +22,25 @@ namespace SiMS_projekat.View
     public partial class UpdateMedicinePage : Window
     {
         private MedicineController medicineController = new MedicineController();
-        private string id;
+        private string medicineCode;
         private Medicine medicine;
-        private List<Medicine> medicines;
-        public UpdateMedicinePage(string id)
+        public UpdateMedicinePage(string medicineCode)
         {
             InitializeComponent();
-            this.id = id;
-            medicines = medicineController.GetAll();
-            for (int i = 0; i < medicines.Count(); i++)
-            {
-                if (medicines[i].MedicineCode == id)
-                {
-                    medicine = medicines[i];
-                }
-            }
+            this.medicineCode = medicineCode;
+            ViewUpdateMedicine();
+        }
+
+        private void updateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateMedicine();
+            ViewAllMedicinesPage.medicineDataGrid.ItemsSource = medicineController.GetAll();
+            this.Hide();
+        }
+
+        private void ViewUpdateMedicine()
+        {
+            medicine = medicineController.GetById(medicineCode);
             nameTextBox.Text = medicine.Name;
             producerTextBox.Text = medicine.Producer;
             quantityTextBox.Text = medicine.Quantity.ToString();
@@ -45,18 +49,21 @@ namespace SiMS_projekat.View
             rejectedCheckBox.IsChecked = medicine.Rejected;
         }
 
-        private void updateBtn_Click(object sender, RoutedEventArgs e)
+        private void UpdateMedicine()
         {
             medicine.Name = nameTextBox.Text;
             medicine.Producer = producerTextBox.Text;
             medicine.Quantity = int.Parse(quantityTextBox.Text);
             medicine.Price = double.Parse(priceTextBox.Text);
             medicine.Accepted = (bool)acceptedCheckBox.IsChecked;
+            if (!medicine.Accepted)
+            {
+                medicine.PharmacistCounter = 0;
+                medicine.DoctorCounter = 0;
+                medicine.AcceptedDetails = null;
+            }
             medicine.Rejected = (bool)rejectedCheckBox.IsChecked;
             medicineController.Update(medicine);
-            List<Medicine> updatedMedicines = medicineController.GetAll();
-            ViewAllMedicinesPage.medicineDataGrid.ItemsSource = updatedMedicines;
-            this.Hide();
         }
     }
 }

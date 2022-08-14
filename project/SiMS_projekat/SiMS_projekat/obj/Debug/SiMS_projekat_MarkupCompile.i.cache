@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Digital Planet\source\repos\SiMS_projekat\SiMS_projekat\obj\Debug\
+C:\Users\Digital Planet\Desktop\SiMS - Specifikacija i modeliranje softvera\SiMS_projekat\project\SiMS_projekat\SiMS_projekat\obj\Debug\
 SiMS_projekat
 none
 false
 DEBUG;TRACE
-C:\Users\Digital Planet\source\repos\SiMS_projekat\SiMS_projekat\App.xaml
+C:\Users\Digital Planet\Desktop\SiMS - Specifikacija i modeliranje softvera\SiMS_projekat\project\SiMS_projekat\SiMS_projekat\App.xaml
 16360911083
 
-36-277955673
-14-603235899
+43-2009698407
+14-1633158154
 MainWindow.xaml;View\AcceptedAndRejectedMedicines.xaml;View\CreateNewMedicinePage.xaml;View\FarmaceutHomepage.xaml;View\IngredientsForMedicinePage.xaml;View\LekarHomepage.xaml;View\MedicineIngredients.xaml;View\MedicineOnHoldPage.xaml;View\PurchasePage.xaml;View\RegistrationPage.xaml;View\RejectedReason.xaml;View\UpdateMedicinePage.xaml;View\UpdateUserPage.xaml;View\UpravnikHomepage.xaml;View\ViewAllMedicinesPage.xaml;View\ViewAllUsersPage.xaml;
 
-True
+False
 

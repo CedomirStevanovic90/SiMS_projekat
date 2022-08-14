@@ -17,8 +17,8 @@ namespace SiMS_projekat.Model
         public List<IngredientDTO> Ingredients { get; set; }
         public bool Accepted { get; set; }
         public bool Rejected { get; set; }
-        public int CountDoctors { get; set; }
-        public int CountPharmacists { get; set; }
+        public int DoctorCounter { get; set; }
+        public int PharmacistCounter { get; set; }
         public string AcceptedDetails { get; set; }
         public string RejectedDetails { get; set; }
         public List<MedicineDTO> MedicinesPurchase { get; set; }
